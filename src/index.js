@@ -1,16 +1,8 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import registerServiceWorker from "./registerServiceWorker";
-import Login from "./Components/Login";
-// import Dashboard from "./Components/Dashboard";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+import 'bootstrap/dist/css/bootstrap.css'
+import registerServiceWorker from './registerServiceWorker';
 
-
-ReactDOM.render(<Login />, document.getElementById("root"));
-
-
+ReactDOM.render(<App />, document.getElementById('root'));
 registerServiceWorker();
-
-if (module.hot) {
-  module.hot.accept();
-}

@@ -1,104 +1,85 @@
 import React, { Component } from "react";
-import swal from "sweetalert";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Dashboard from "./Dashboard";
+import firebase from "firebase";
+import App from "../App";
 
+var config = {
+  apiKey: "AIzaSyAosAXgYt-gniqc-LLgZLy-bWTI4lAnGqM",
+  authDomain: "react-todoapp-124be.firebaseapp.com",
+  databaseURL: "https://react-todoapp-124be.firebaseio.com",
+  projectId: "react-todoapp-124be",
+  storageBucket: "react-todoapp-124be.appspot.com",
+  messagingSenderId: "555425814855"
+};
+firebase.initializeApp(config);
 
 class Login extends Component {
   constructor() {
     super();
     this.state = {
-      orignalUsername: "jokerz123",
-      orignalPassword: "123456",
-      isLoggedIn: false      
+      userLoggedIn: ""
     };
-    // this.cancel = this.cancel.bind(this);
-    // console.log(this.state.isLoggedIn);
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleLogin = this.handleLogin.bind(this);
+  }
+
+  handleChange(e) {
+    e.preventDefault();
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+  }
+
+  handleLogin(e) {
+    e.preventDefault();
+    let userEmail = this.state.email;
+    let userPassword = this.state.password;
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(userEmail, userPassword)
+      .then(function(success) {
+        console.log(success);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
   }
 
   render() {
-    return this.renderDash();
-    // !this.state.isLoggedIn ? : this.renderLogin() 
-  }
-
- 
-
- 
-
-
-
-
-  renderLogin() {
     return (
-      <div className="container">
-        <h3 className="display-4 mb-3 text-center">Login</h3>
-
-        <div className="form-group">
-          <input
-            value={this.state.username}
-            type="text"
-            className="form-control"
-            name="username"
-            placeholder="JhonDoe123"
-            onChange={this.handleUsername}
-          />
-        </div>
-        <div className="form-group">
-          <input
-            value={this.state.password}
-            type="password"
-            name="password"
-            className="form-control"
-            id="password1"
-            placeholder="********"
-            onChange={this.handlePassword}
-          />
-        </div>
-        <button className="btn btn-primary" onClick={this.HandleLogin}>
-          Login
-        </button>
+      <div className="container-fluid">
+        <h2 className="display-4 col-md-6 offset-5">Login</h2>
+        <form method="POST">
+          <div className="form-group col-md-6 offset-3">
+            <label htmlFor="email">Email: </label>
+            <input
+              type="email"
+              className="form-control"
+              name="email"
+              onChange={this.handleChange}
+            />
+          </div>
+          <div className="form-group col-md-6 offset-3">
+            <label htmlFor="password">Password: </label>
+            <input
+              type="password"
+              className="form-control"
+              name="password"
+              onChange={this.handleChange}
+            />
+          </div>
+          <div className="form-group">
+            <button
+              onClick={this.handleLogin}
+              className="btn btn-info col-2 offset-5 mt-3"
+            >
+              Login
+            </button>
+          </div>
+        </form>
       </div>
     );
   }
-
-  renderDash(){
-    return <Dashboard />
-    console.log("working")
-  }
-
-  handleUsername = username => {
-    this.setState({
-      username: username.target.value
-    });
-  };
-
-  handlePassword = password => {
-    this.setState({
-      password: password.target.value
-    });
-  };
-
-  HandleLogin = () => {
-    if (
-      this.state.username === this.state.orignalUsername &&
-      this.state.password === this.state.orignalPassword
-    ) {
-      swal("Success", "Logged In", "success").then(val => {
-        this.setState({
-          isLoggedIn: true
-        });
-      });
-
-      // return <Counter />;
-    } else {
-      swal("Error", "Try Again", "error");
-    }
-  };
 }
 
 export default Login;
-
-
-
-// WEBPACK FOOTER //
-// ./src/Components/Login.jsx
